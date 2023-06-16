@@ -1,14 +1,12 @@
+# Constructs a Decision Tree Using the Gini Index
+
+
 from dataclasses import dataclass
 
 import numpy as np
 
 mylist = [1, 2, 3, 4, 5, 6]
 result = np.prod(np.array(mylist))
-
-# Constructs a Decision Tree Using the Gini Index
-
-
-# attributes = ['M', 'N', 'Q']
 
 
 @dataclass
@@ -146,7 +144,7 @@ def shrink_source_table_to_attribute_values(source_table, attribute_filters: lis
     return res_table
 
 
-def solution(source_table: list[list] = None, tree_root_attributes: list = None):
+def construct_decision_rules_set(source_table: list[list] = None, tree_root_attributes: list = None):
     all_rules = []
     if not source_table:
         source_table = sample_tree
@@ -175,17 +173,17 @@ def solution(source_table: list[list] = None, tree_root_attributes: list = None)
                 tree_root_attributes_copy.append(leftover_attributes[0])
             shrunk_table = shrink_source_table_to_attribute_values(source_table, leftover_attributes)
             # tree_root_attributes_copy.append(max_gini_gain_attribute)
-            all_rules.extend(solution(shrunk_table, tree_root_attributes=tree_root_attributes_copy))
+            all_rules.extend(construct_decision_rules_set(shrunk_table, tree_root_attributes=tree_root_attributes_copy))
     return all_rules
 
 
 def pretty_print(rules: list[Rule]):
     for rule in rules:
-        print(f'{" * ".join(rule.tree_path[:-1])} -> {rule.tree_path[-1]}\n'
+        print(f'\n{" * ".join(rule.tree_path[:-1])} -> {rule.tree_path[-1]}\n'
               f'Support - {rule.support}\n'
-              f'Confidence - {rule.confidence_percentage}%\n\n')
+              f'Confidence - {rule.confidence_percentage}%\n')
 
 
 if __name__ == '__main__':
-    pretty_print(solution())
+    pretty_print(construct_decision_rules_set())
 
