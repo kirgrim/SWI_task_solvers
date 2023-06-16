@@ -2,6 +2,8 @@
 import copy
 import itertools
 
+from utils import sorted_string, generate_sequences_from_string
+
 test_transactions = [
     'ACDFG',
     'ABCDF',
@@ -14,10 +16,6 @@ test_transactions = [
 test_min_support = 3
 
 test_confidence = 0.75
-
-
-def sorted_string(s: str):
-    return ''.join(sorted(s))
 
 
 def get_confidence_value_based_on_state(source_value: int, included_elements: list = None,):
@@ -49,13 +47,6 @@ def compose_representative_sets(d: dict) -> dict:
         d = {k: v for k, v in d.items() if not is_subset_of(k, superset_key)
              or k == superset_key or v > d_copy[superset_key] and len(k) > 1}
     return d
-
-
-def generate_sequences_from_string(lst: str, length: int):
-    return set(sorted_string(''.join(set(seq)))
-            for seq
-            in list(itertools.combinations([x for x in lst],
-                                           length)))
 
 
 def compose_representative_rules(representative_sets, included_elements_vs_confidence, min_confidence):
